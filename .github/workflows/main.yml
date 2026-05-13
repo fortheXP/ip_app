@@ -36,7 +36,7 @@ jobs:
         run: ruff format --check app/
 
   test:
-    runs-on: ubunubuntu-latest
+    runs-on: ubuntu-latest
     needs: lints
     steps:
       - uses: actions/checkout@v6
@@ -53,5 +53,19 @@ jobs:
 
       - name: Run tests
         run: pytest tests/ -v
-        
+
+  helm-lint:
+      runs-on: ubuntu-latest
+      steps: 
+        - uses: actions/checkout@v6
+
+        - name: Set up Helm
+          uses: Azure/setup-helm@v3
+
+        - name: Lint Helm chart
+          run: helm lint ${{ env.HELM_CHART_PATH }}
+
+        - name: Template validate 
+          run: helm template test-release ${{ env.HELM_CHART_PATH }} > /dev/null
+      
         
