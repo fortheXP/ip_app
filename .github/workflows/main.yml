@@ -1,0 +1,57 @@
+name: CI/CD pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  HELM_RELEASE: ip-app
+  HELM_CHART_PATH: ./charts
+  K8S_NAMESPACE: default
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  lints:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: set up python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      
+      - name: Install linters
+        run: pip install ruff
+
+      - name: Lint python code
+        run: ruff check app/
+
+      - name: Format check
+        run: ruff format --check app/
+
+  test:
+    runs-on: ubunubuntu-latest
+    needs: lints
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: set up python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          pip install -r app/requirements.txt
+          pip install pytest
+
+      - name: Run tests
+        run: pytest tests/ -v
+        
+        
