@@ -68,7 +68,7 @@ jobs:
         - name: Template validate 
           run: helm template test-release ${{ env.HELM_CHART_PATH }} > /dev/null
 
-    security-scan:
+  security-scan:
       runs-on: ubuntu-latest
       needs: [lint, test]
       steps: 
