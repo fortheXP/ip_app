@@ -7,5 +7,3 @@ dist/
 build/
 .agents/
 helm/
-Dockerfile
-.dockerignore
