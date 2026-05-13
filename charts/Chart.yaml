@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ip-app
+description: A simple app returns visitors ip
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
