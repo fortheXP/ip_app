@@ -1,15 +1,15 @@
-FROM python:3.12-slim AS builder
+FROM python:3.12-alpine AS builder
 WORKDIR /app
 COPY app/requirement.txt .
 RUN python -m venv /opt/venv && \
     /opt/venv/bin/pip install --no-cache-dir -r requirement.txt
 
-FROM python:3.12-slim
+FROM python:3.12-alpine
 WORKDIR /app
 COPY --from=builder /opt/venv /opt/venv
 COPY app/ .
-RUN addgroup --system --gid 1000 app && \
-    adduser --system --uid 1000 --gid 1000 app && \
+RUN addgroup -S -g 1000 app && \
+    adduser -S -u 1000 -G app app && \
     chown -R app:app /app
 USER app
 ENV PATH="/opt/venv/bin:$PATH"
