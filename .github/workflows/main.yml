@@ -149,7 +149,7 @@ jobs:
         run: |
           aws eks update-kubeconfig \
             --region ap-south-2 \
-            --name ip-app-cluster \
+            --name cluster2 \
             --kubeconfig $HOME/.kube/config
       
       - name: Test cluster connection
