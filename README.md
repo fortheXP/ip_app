@@ -79,7 +79,6 @@ All sensitive values are stored in **GitHub Secrets** and never hardcoded in the
 | `AWS_REGION` | EKS cluster region |
 | `AWS_IAM_ROLE_NAME` | IAM role assumed via OIDC |
 | `EKS_CLUSTER_NAME` | Target EKS cluster name |
-| `SLACK_WEBHOOK_URL` | Slack webhook for deploy notifications |
 
 Kubernetes secrets can be injected via the chart's `secrets.envFrom`:
 
