@@ -49,8 +49,10 @@ spec:
           {{- end }}
           env:
             {{- toYaml .Values.env | nindent 12 }}
+          {{- if .Values.secrets.envFrom }}
           envFrom:
             {{- toYaml .Values.secrets.envFrom | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

@@ -96,4 +96,4 @@ Every build is scanned with **Trivy** in CI:
 
 - **Severity threshold**: HIGH and CRITICAL only
 - **Exit on finding**: `exit-code: 1` — any HIGH/CRITICAL CVE fails the build
-- **SBOM**: Generated automatically by Trivy during the scan step
+- **Vulnerability scan**: Table output of HIGH/CRITICAL CVEs
