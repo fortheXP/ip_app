@@ -40,13 +40,13 @@ spec:
               containerPort: {{ .Values.service.targetPort }}
               protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /health
-              port: http
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
-            httpGet:
-              path: /ready
-              port: http
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- if .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml .Values.startupProbe | nindent 12 }}
+          {{- end }}
           env:
             {{- toYaml .Values.env | nindent 12 }}
           resources:

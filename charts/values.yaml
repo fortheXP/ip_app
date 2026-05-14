@@ -14,25 +14,41 @@ podLabels: {}
 
 podSecurityContext: {}
 
-securityContext: {}
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi
 
-service:
-  type: ClusterIP
-  port: 80
-  targetPort: 5000
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 5000
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 3
 
-ingress:
-  enabled: true
-  className: ""
-  annotations: {}
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: Prefix
-  tls: []
+readinessProbe:
+  httpGet:
+    path: /ready
+    port: 5000
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 3
 
-resources: {}
+startupProbe:
+  httpGet:
+    path: /health
+    port: 5000
+  failureThreshold: 30
+  periodSeconds: 10
+
+securityContext:
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  runAsUser: 1000
 
 env: []
 
@@ -41,3 +57,22 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 5000
+
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+  hosts:
+    - host: ""
+    paths:
+        - path: /
+          pathType: Prefix
+  tls: []
