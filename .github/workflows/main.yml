@@ -153,6 +153,8 @@ jobs:
       
       - name: Set up Helm
         uses: Azure/setup-helm@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  
       - name: Helm upgrade / install
         run: |
           helm upgrade --install ${{ env.HELM_RELEASE }} ${{ env.HELM_CHART_PATH }} \
