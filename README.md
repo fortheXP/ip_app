@@ -45,6 +45,7 @@ flowchart LR
 3. **Helm install/upgrade** with image SHA tag from the build stage
 4. **Verify rollout** — `kubectl rollout status`
 5. **Smoke test** — curl `/health`, `/ready`, and `/` through the Ingress endpoint
+6. **Commit status notification** — sets a `deploy/eks` success/failure status on the commit via `actions/github-script`
 
 ## Local Development (kind/minikube)
 
