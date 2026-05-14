@@ -155,7 +155,11 @@ jobs:
       - name: Debug caller identity
         run: aws sts get-caller-identity
 
-      
+      - name: Debug kubeconfig
+        run: |
+          kubectl config view
+          kubectl config current-context
+          
       - name: Test cluster connection
         run: kubectl get nodes
       
