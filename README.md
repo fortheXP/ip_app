@@ -49,41 +49,13 @@ flowchart LR
 
 ## Local Development
 
-### kind
+### kind / minikube
 
 ```bash
 # Create a local cluster
-kind create cluster --name ip-app
+kind create cluster --name ip-app   # or: minikube start
 
-# Build the image
-docker build -t ip-app:latest .
-
-# Load into kind
-kind load docker-image ip-app:latest --name ip-app
-
-# Install the chart with local overrides (no ingress, local image)
-helm upgrade --install ip-app ./charts \
-  --namespace ip-app \
-  --create-namespace \
-  --values charts/values.local.yaml
-
-# Port-forward to test
-kubectl port-forward deployment/ip-app 5000:5000 -n ip-app
-curl http://localhost:5000/
-```
-
-### minikube
-
-```bash
-# Start a local cluster
-minikube start
-
-# Build the image inside minikube's Docker daemon
-eval $(minikube docker-env)
-docker build -t ip-app:latest .
-eval $(minikube docker-env -u)
-
-# Install the chart with local overrides (no ingress, local image)
+# Install the chart (pulls ghcr.io/forthexp/ip-app from public registry)
 helm upgrade --install ip-app ./charts \
   --namespace ip-app \
   --create-namespace \
