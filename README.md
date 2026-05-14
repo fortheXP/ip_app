@@ -90,7 +90,7 @@ secrets:
         name: ip-app-secret
 ```
 
-## Image Scanning & SBOM
+## Image Scanning 
 
 Every build is scanned with **Trivy** in CI:
 
