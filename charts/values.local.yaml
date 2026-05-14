@@ -5,5 +5,5 @@ service:
   type: ClusterIP
 
 image:
-  repository: ip-app
+  repository: ghcr.io/forthexp/ip-app
   tag: latest

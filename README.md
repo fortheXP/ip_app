@@ -47,7 +47,9 @@ flowchart LR
 5. **Smoke test** — curl `/health`, `/ready`, and `/` through the Ingress endpoint
 6. **Commit status notification** — sets a `deploy/eks` success/failure status on the commit via `actions/github-script`
 
-## Local Development (kind/minikube)
+## Local Development
+
+### kind
 
 ```bash
 # Create a local cluster
@@ -58,6 +60,28 @@ docker build -t ip-app:latest .
 
 # Load into kind
 kind load docker-image ip-app:latest --name ip-app
+
+# Install the chart with local overrides (no ingress, local image)
+helm upgrade --install ip-app ./charts \
+  --namespace ip-app \
+  --create-namespace \
+  --values charts/values.local.yaml
+
+# Port-forward to test
+kubectl port-forward deployment/ip-app 5000:5000 -n ip-app
+curl http://localhost:5000/
+```
+
+### minikube
+
+```bash
+# Start a local cluster
+minikube start
+
+# Build the image inside minikube's Docker daemon
+eval $(minikube docker-env)
+docker build -t ip-app:latest .
+eval $(minikube docker-env -u)
 
 # Install the chart with local overrides (no ingress, local image)
 helm upgrade --install ip-app ./charts \
