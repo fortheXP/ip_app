@@ -169,8 +169,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}  
           
       - name: Helm upgrade / install
-        env:
-          KUBECONFIG: $HOME/.kube/config    
         run: |
           helm upgrade --install ${{ env.HELM_RELEASE }} ${{ env.HELM_CHART_PATH }} \
             --namespace ${{ env.K8S_NAMESPACE }} \
@@ -180,8 +178,9 @@ jobs:
             --wait \
             --timeout 5m \
             --rollback-on-failure
-            - name: Verify rollout
-              run: |
-                kubectl rollout status deployment/${{ env.HELM_RELEASE }} \
-                  --namespace ${{ env.K8S_NAMESPACE }} \
-                  --timeout=3m
+
+      - name: Verify rollout
+        run: |
+          kubectl rollout status deployment/${{ env.HELM_RELEASE }} \
+            --namespace ${{ env.K8S_NAMESPACE }} \
+            --timeout=3m
