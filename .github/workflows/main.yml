@@ -151,6 +151,10 @@ jobs:
             --region ap-south-2 \
             --name cluster2 \
             --kubeconfig $HOME/.kube/config
+
+      - name: Debug caller identity
+        run: aws sts get-caller-identity
+
       
       - name: Test cluster connection
         run: kubectl get nodes
