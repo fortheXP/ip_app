@@ -111,8 +111,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
             type=sha
+            type=ref,event=branch
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push
@@ -148,8 +148,8 @@ jobs:
       - name: Update kubeconfig for EKS
         run: |
           aws eks update-kubeconfig \
-            --region ap-south-2 \
-            --name cluster2 \
+            --region ${{ secrets.AWS_REGION }} \
+            --name ${{ secrets.EKS_CLUSTER_NAME }} \
             --kubeconfig $HOME/.kube/config
 
       - name: Debug caller identity
@@ -184,3 +184,12 @@ jobs:
           kubectl rollout status deployment/${{ env.HELM_RELEASE }} \
             --namespace ${{ env.K8S_NAMESPACE }} \
             --timeout=3m
+
+      - name: Smoke test
+        run: |
+          ENDPOINT=$(kubectl get ingress ${{ env.HELM_RELEASE }} \
+            --namespace ${{ env.K8S_NAMESPACE }} \
+            -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          curl -f http://$ENDPOINT/health
+          curl -f http://$ENDPOINT/ready
+          curl -f http://$ENDPOINT/

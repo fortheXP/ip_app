@@ -1,0 +1,9 @@
+ingress:
+  enabled: false
+
+service:
+  type: ClusterIP
+
+image:
+  repository: ip-app
+  tag: latest
